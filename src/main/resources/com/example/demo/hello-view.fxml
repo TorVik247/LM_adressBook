@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.HelloController">
    <children>
       <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
@@ -52,7 +51,7 @@
             <Insets />
          </VBox.margin>
       </FlowPane>
-      <FlowPane maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+      <FlowPane prefHeight="300.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
             <TableView prefHeight="200.0" prefWidth="315.0">
                <columns>
