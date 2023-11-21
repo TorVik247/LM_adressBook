@@ -42,7 +42,7 @@ public class EditController {
             }
             closeDialog();
         } else {
-            System.out.println("Please enter both name and phone.");
+            System.out.println("Nema data");
         }
     }
 

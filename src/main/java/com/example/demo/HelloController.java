@@ -91,7 +91,7 @@ public class HelloController {
                 EditController editController = loader.getController();
                 editController.setPerson(selectedPerson);
                 Stage stage = new Stage();
-                stage.setTitle("Редагувати контакт");
+                stage.setTitle("Редагувати");
                 stage.setResizable(false);
                 stage.setScene(new Scene(root));
                 stage.showAndWait();
@@ -101,7 +101,7 @@ public class HelloController {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Please select a contact to edit.");
+            System.out.println("Viberut Data for edit");
         }
     }
 
@@ -114,7 +114,7 @@ public class HelloController {
             tableAddressBook.setItems(addressBookImpl.getPersonList());
             updateCountLabel();
         } else {
-            System.out.println("Please select a contact to delete.");
+            System.out.println("Viberut Data for delet");
         }
     }
 
