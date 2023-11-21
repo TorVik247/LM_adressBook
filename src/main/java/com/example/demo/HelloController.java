@@ -1,27 +1,33 @@
 package com.example.demo;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 
 public class HelloController {
+
+    private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
     @FXML
     private Button btnAdd;
     @FXML
     private Button btnDel;
     @FXML
+    private Button btnEdit;
+    @FXML
     private Button btnSearch;
     @FXML
-    private Button btnEdit;
+    private Label labelCount;
     @FXML
     private TableColumn<Person, String> columnPIP;
     @FXML
@@ -30,67 +36,101 @@ public class HelloController {
     private TableView<Person> tableAddressBook;
     @FXML
     private TextField txtSearch;
-    @FXML
-    private Label labelCount;
-    private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
-
-
 
 
     @FXML
-    void new_Alert(ActionEvent event){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Видалення");
+    public void openEditDialog(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/edit.fxml"));
+            Parent root = loader.load();
 
-        alert.setContentText("Ви впевнені , що хочете видалити запис? ");
+            EditController editController = loader.getController();
+            editController.setPerson(new Person("", ""));
+            Stage stage = new Stage();
+            stage.setTitle("Додати контакт");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            Person newPerson = editController.getPerson();
 
-        if (alert.showAndWait().get() == null){
-            this.btnDel.setText("No selection!");
-        }else if (alert.showAndWait().get() == ButtonType.OK) {
-            this.btnDel.setText("Запис виделено! ");
-        }else if (alert.showAndWait().get() == ButtonType.CANCEL){
-            this.btnDel.setText("Відмінено!");
-        }else {
-            this.btnDel.setText("_");
-        }
-    }
 
-    @FXML
-    public void initialize(){
-        columnPIP.setCellValueFactory(new PropertyValueFactory<Person,String>("PIP"));
-        columnPhone.setCellValueFactory(new PropertyValueFactory<Person,String>("Phone"));
-        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
-            @Override
-            public void onChanged(Change<? extends Person> c) {
+            if (newPerson != null) {
+                addressBookImpl.add(newPerson);
+                tableAddressBook.setItems(addressBookImpl.getPersonList());
                 updateCountLabel();
             }
-        });
-
-        addressBookImpl.fillTestData();
-        tableAddressBook.setItems(addressBookImpl.getPersonList());
-    }
-    private void updateCountLabel(){
-        labelCount.setText("Кількість записів: " + addressBookImpl.getPersonList().size());
-    }
-
-    @FXML
-    void showDialog(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("edit.fxml"));
-
-        try {
-            Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(),400,150);
-            stage.setScene(scene);
-
-            stage.setTitle("Редагування");
-            stage.setMinHeight(170);
-            stage.setMinWidth(400);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(btnAdd.getScene().getWindow());
-            stage.show();
-
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void initialize() throws IOException {
+        columnPIP.setCellValueFactory(cellData -> cellData.getValue().pipProperty());
+        columnPhone.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
+        addressBookImpl.getPersonList().addListener((ListChangeListener<Person>) c -> updateCountLabel());
+        addressBookImpl.fillTestData();
+        tableAddressBook.setItems(addressBookImpl.getPersonList());
+        updateCountLabel();
+    }
+
+    private void updateCountLabel() {
+        labelCount.setText("Кількість записів: " + addressBookImpl.getPersonList().size());
+    }
+
+
+
+    @FXML
+    public void openEditDialogForEdit(ActionEvent event) {
+        Person selectedPerson = tableAddressBook.getSelectionModel().getSelectedItem();
+
+        if (selectedPerson != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/edit.fxml"));
+                Parent root = loader.load();
+                EditController editController = loader.getController();
+                editController.setPerson(selectedPerson);
+                Stage stage = new Stage();
+                stage.setTitle("Редагувати контакт");
+                stage.setResizable(false);
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+                tableAddressBook.setItems(addressBookImpl.getPersonList());
+                updateCountLabel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Please select a contact to edit.");
+        }
+    }
+
+    @FXML
+    public void deleteSelectedContact() {
+        Person personToDelete = tableAddressBook.getSelectionModel().getSelectedItem();
+
+        if (personToDelete != null) {
+            addressBookImpl.delete(personToDelete);
+            tableAddressBook.setItems(addressBookImpl.getPersonList());
+            updateCountLabel();
+        } else {
+            System.out.println("Please select a contact to delete.");
+        }
+    }
+
+    @FXML
+    private void search() {
+        String query = txtSearch.getText().toLowerCase();
+        ObservableList<Person> searchResults = FXCollections.observableArrayList();
+
+        for (Person person : addressBookImpl.getPersonList()) {
+            if (person.getPip().toLowerCase().contains(query) || person.getPhone().toLowerCase().contains(query)) {
+                searchResults.add(person);
+            }
+        }
+
+        tableAddressBook.setItems(searchResults);
+
+    }
+
 }

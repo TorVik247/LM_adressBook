@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: FDB9B9;" >
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: FDB9B9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.EditController">
    <left>
       <VBox BorderPane.alignment="TOP_CENTER">
          <children>
@@ -28,11 +28,11 @@
    <center>
       <VBox prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField>
+            <TextField fx:id="txtPIP">
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin></TextField>
-            <TextField>
+            <TextField fx:id="txtPhone">
                <VBox.margin>
                   <Insets top="25.0" />
                </VBox.margin></TextField>
@@ -48,7 +48,7 @@
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Ок">
+            <Button fx:id="btnOk" mnemonicParsing="false" onAction="#handleOkButtonAction" prefHeight="25.0" prefWidth="60.0" text="Ок">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -56,7 +56,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Відміна">
+            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancelButtonAction" prefHeight="25.0" prefWidth="60.0" text="Відміна">
                <VBox.margin>
                   <Insets top="25.0" />
                </VBox.margin>

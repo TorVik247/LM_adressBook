@@ -9,20 +9,16 @@ public class CollectionAddressBook implements AddressBook{
     private ObservableList<Person> personList = FXCollections.observableArrayList();
 
     @Override
-    public void add(Person person) {
-
+    public void add(Person person) { personList.add(person);
     }
 
     @Override
     public void update(Person person) {
 
     }
-
     @Override
-    public void delete(Person person) {
-
+    public void delete(Person person) { personList.remove(person);
     }
-
     public ObservableList <Person>getPersonList(){return personList;}
 
      public void print(){
@@ -30,7 +26,7 @@ public class CollectionAddressBook implements AddressBook{
         System.out.println();
         for (Person person: personList){
             number++;
-            System.out.println(number+") ПІП: "+person.getPIP()+"; Телефон: "+person.getPhone());
+            System.out.println(number+") ПІП: "+person.getPip()+"; Телефон: "+person.getPhone());
         }
      }
 
@@ -40,4 +36,7 @@ public class CollectionAddressBook implements AddressBook{
          personList.add(new Person("xcvb","98755"));
 
      }
+
+
+
 }
